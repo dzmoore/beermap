@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.spacepocalypse.data.BeerDbAccess;
+import com.spacepocalypse.pojo.MappedBeer;
 
 public class BeerSearchServlet extends HttpServlet {
 	private static final String VIEW_QUERIES_PARAM_NAME = "view_queries";
@@ -48,7 +49,7 @@ public class BeerSearchServlet extends HttpServlet {
 			logRequest(req.getRemoteHost(), beerName);
 
 			// do query
-			List<Map<String, String>> results = getBeerDbAccess().findAllBeersByName(beerName);
+			List<MappedBeer> results = getBeerDbAccess().findAllBeersByName(beerName);
 			
 			// print results
 			printResults(out, beerName, results);
@@ -94,18 +95,15 @@ public class BeerSearchServlet extends HttpServlet {
 		}
 	}
 
-	private void printResults(PrintWriter out, String beerName, List<Map<String, String>> results) {
+	private void printResults(PrintWriter out, String beerName, List<MappedBeer> results) {
 		out.println("<b>Results for \"" + beerName + "\":</b><br /> <br />");
 		out.println("<hr />");
 
-		for (Map<String, String> beer : results) {
-			out.print("<h3><b>"+beer.get("name")+ "</b></h3>");
-			for (String key : KEY_ORDER) {
-				out.print("<b>"+key+":  </b>");
-				out.print(beer.get(key));
-				out.print("<br />");
-			}
-			
+		for (MappedBeer beer : results) {
+			out.print("<h3><b>"+beer.getName() + "</b></h3>");
+			out.print("<b>abv</b>: "+beer.getAbv());
+			out.print("<br />");
+			out.println("<b>descript</b>: "+beer.getDescript());
 			out.println("<hr />");
 		}
 	}
