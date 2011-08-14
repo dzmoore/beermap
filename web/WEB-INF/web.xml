@@ -19,6 +19,11 @@
         <servlet-name>BeerSearchServlet</servlet-name>
         <servlet-class>com.spacepocalypse.web.BeerSearchServlet</servlet-class>
     </servlet>
+    
+	<servlet>
+        <servlet-name>BeerBarcodeServlet</servlet-name>
+        <servlet-class>com.spacepocalypse.web.BeerBarcode</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>WelcomeServlet</servlet-name>
@@ -28,6 +33,11 @@
     <servlet-mapping>
         <servlet-name>BeerSearchServlet</servlet-name>
         <url-pattern>/beersearch</url-pattern>
+    </servlet-mapping>
+    
+	<servlet-mapping>
+        <servlet-name>BeerBarcodeServlet</servlet-name>
+        <url-pattern>/beerbarcode</url-pattern>
     </servlet-mapping>
 
 </web-app>

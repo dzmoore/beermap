@@ -8,5 +8,13 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/home/dylan/mysql-connector-java-5.0.8/mysql-connector-java-5.0.8-bin.jar"/>
+	<classpathentry kind="lib" path="/home/dylan/zxing/zxing/javase/javase.jar"/>
+	<classpathentry kind="lib" path="/home/dylan/zxing/zxing/core/core.jar" sourcepath="/home/dylan/zxing/zxing/core/src"/>
+	<classpathentry kind="lib" path="/home/dylan/apache-commons/commons-fileupload-1.2.2/lib/commons-fileupload-1.2.2.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/home/dylan/apache-commons/commons-fileupload-1.2.2/site/apidocs/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/dylan/apache-commons/commons-io-2.0.1/commons-io-2.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

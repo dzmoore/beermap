@@ -16,7 +16,7 @@
 -->
 
 <!--
-     Generamysql.jarl purpose build script for web applications and web services,
+     General purpose build script for web applications and web services,
      including enhanced support for deploying directly to a Tomcat 6
      based server.
 
@@ -138,11 +138,8 @@
   <property name="manager.password"   value="tomcat"/>
   <property name="src.home"      value="${basedir}/src"/>
   <property name="web.home"      value="${basedir}/web"/>
+  <property name="lib.home"      value="${basedir}/lib"/>
 	
-  <property name="mysql.jar" 
-    value="/home/dylan/mysql-connector-java-5.0.8/mysql-connector-java-5.0.8-bin.jar"/>
-
-
 <!-- ==================== External Dependencies =========================== -->
 
 
@@ -189,8 +186,9 @@
 <!--
     <pathelement location="${foo.jar}"/>
 -->
-  	<pathelement location="${build.home}/WEB-INF/lib/mysql-connector-java-5.0.8-bin.jar"/>
-
+  	<fileset dir="${lib.home}">
+  	      <include name="*.jar"/>
+	</fileset>
     <!-- Include all elements that Tomcat exposes to applications -->
     <fileset dir="${catalina.home}/bin">
       <include name="*.jar"/>
@@ -462,7 +460,9 @@
     <copy todir="${build.home}/WEB-INF/lib" file="${foo.jar}"/>
 -->
   	
-  	<copy todir="${build.home}/WEB-INF/lib" file="${mysql.jar}"/>
+  	<copy todir="${build.home}/WEB-INF/lib">
+  		<fileset dir="${lib.home}"/>
+	</copy>
 
     <!-- Copy static files from external dependencies as needed -->
     <!-- *** CUSTOMIZE HERE AS REQUIRED BY YOUR APPLICATION *** -->
