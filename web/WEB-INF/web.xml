@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+    version="2.4">
+
+    <display-name>BeerMap</display-name>
+    <description>
+        BeerMap currently provides access to the openbeerdb database.  Intended
+        future functionality includes barcode scanning and recommendations.
+    </description>
+
+    <servlet>
+        <servlet-name>WelcomeServlet</servlet-name>
+        <servlet-class>com.spacepocalypse.web.WelcomeServlet</servlet-class>
+    </servlet>
+    
+	<servlet>
+        <servlet-name>BeerSearchServlet</servlet-name>
+        <servlet-class>com.spacepocalypse.web.BeerSearchServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>WelcomeServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>BeerSearchServlet</servlet-name>
+        <url-pattern>/beersearch</url-pattern>
+    </servlet-mapping>
+
+</web-app>
