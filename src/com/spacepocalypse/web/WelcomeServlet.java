@@ -30,6 +30,12 @@ public class WelcomeServlet extends HttpServlet {
 		out.println("<form name=\"beer_search_form\" action=\"beersearch\" method=\"get\">");
 		out.println("<input type=\"submit\" value=\"BeerSearch\" />");
 		out.println("</form>");
+		out.println("<form name=\"beer_barcode_form\" action=\"beerbarcode\" method=\"get\">");
+		out.println("<input type=\"submit\" value=\"BeerBarcode\" />");
+		out.println("</form>");
+		out.println("<form name=\"beer_insert_form\" action=\"beerinsert\" method=\"get\">");
+		out.println("<input type=\"submit\" value=\"BeerInsert\" />");
+		out.println("</form>");
 		out.println("</body></html>");
 		out.close();
 	}

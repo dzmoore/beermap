@@ -1,8 +1,6 @@
 package com.spacepocalypse.pojo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MappedBeer implements Serializable {
 	private static final long serialVersionUID = 2563267495110624938L;
@@ -10,13 +8,13 @@ public class MappedBeer implements Serializable {
 	private String name;
 	private float abv;
 	private String descript;
-	private List<String> upcList;
+	private String upc;
 	
 	public MappedBeer() {
 		setName("");
 		setAbv(-1);
 		setDescript("");
-		setUpcList(new ArrayList<String>());
+		setUpc("");
 	}
 	
 	public void setName(String name) {
@@ -37,13 +35,15 @@ public class MappedBeer implements Serializable {
 	public String getDescript() {
 		return descript;
 	}
-	public void setUpcList(List<String> upcList) {
-		this.upcList = upcList;
-	}
-	public List<String> getUpcList() {
-		return upcList;
-	}
 	
+	public void setUpc(String upc) {
+		this.upc = upc;
+	}
+
+	public String getUpc() {
+		return upc;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -53,11 +53,16 @@ public class MappedBeer implements Serializable {
 		sb.append(getAbv());
 		sb.append("] descript=[");
 		sb.append(getDescript());
-		sb.append("] upcList=[");
-		sb.append(getUpcList().toString());
+		sb.append("] upc=[");
+		sb.append(getUpc());
 		sb.append("]");
 		return sb.toString();
 		
+	}
+	
+	public static MappedBeer createMappedBeer(String json) {
+		
+		return null;
 	}
 	
 	

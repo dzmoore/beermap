@@ -22,12 +22,28 @@
     
 	<servlet>
         <servlet-name>BeerBarcodeServlet</servlet-name>
-        <servlet-class>com.spacepocalypse.web.BeerBarcode</servlet-class>
+        <servlet-class>com.spacepocalypse.web.BeerBarcodeServlet</servlet-class>
     </servlet>
+    
+    <servlet>
+        <servlet-name>BeerInsertServlet</servlet-name>
+        <servlet-class>com.spacepocalypse.web.BeerInsertServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>AndroidBeerQueryServlet</servlet-name>
+        <servlet-class>com.spacepocalypse.web.AndroidBeerQueryServlet</servlet-class>
+    </servlet>
+    
 
     <servlet-mapping>
         <servlet-name>WelcomeServlet</servlet-name>
         <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    
+	<servlet-mapping>
+        <servlet-name>WelcomeServlet</servlet-name>
+        <url-pattern>/home</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>
@@ -39,5 +55,17 @@
         <servlet-name>BeerBarcodeServlet</servlet-name>
         <url-pattern>/beerbarcode</url-pattern>
     </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>BeerInsertServlet</servlet-name>
+        <url-pattern>/beerinsert</url-pattern>
+    </servlet-mapping>
+    
+	<servlet-mapping>
+        <servlet-name>AndroidBeerQueryServlet</servlet-name>
+        <url-pattern>/android</url-pattern>
+    </servlet-mapping>
+    
+    
 
 </web-app>

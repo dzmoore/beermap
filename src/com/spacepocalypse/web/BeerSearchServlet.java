@@ -8,12 +8,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.spacepocalypse.data.BeerDbAccess;
+import com.spacepocalypse.engine.BeerSearchEngine;
+import com.spacepocalypse.engine.MarkupEngine;
 import com.spacepocalypse.pojo.MappedBeer;
 
 public class BeerSearchServlet extends HttpServlet {
@@ -23,11 +26,9 @@ public class BeerSearchServlet extends HttpServlet {
 		"abv",
 		"descript"
 	};
-	
 	private static final long serialVersionUID = 4630070655918253818L;
 	
 	private Map<String, List<String>> accessList;
-	private BeerDbAccess beerDbAccess;
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -48,11 +49,8 @@ public class BeerSearchServlet extends HttpServlet {
 			// add to host->query[] table
 			logRequest(req.getRemoteHost(), beerName);
 
-			// do query
-			List<MappedBeer> results = getBeerDbAccess().findAllBeersByName(beerName);
-			
-			// print results
-			printResults(out, beerName, results);
+			// do query and print results
+			BeerSearchEngine.getInstance().doSearchByBeerName(out, beerName);
 		} 
 		
 		if (req.getParameterMap().containsKey(VIEW_QUERIES_PARAM_NAME)) {
@@ -81,7 +79,8 @@ public class BeerSearchServlet extends HttpServlet {
 		
 		out.print("<input type=\"hidden\" name=\"");
 		out.print(VIEW_QUERIES_PARAM_NAME);
-		out.println("\" value=\"1\" /><input type=\"submit\" value=\"View Queries\" /></form></body></html>");
+		out.println("\" value=\"1\" /><input type=\"submit\" value=\"View Queries\" /></form>");
+		out.print(MarkupEngine.getInstance().getNavFooter());
 		out.close();
 	}
 	
@@ -95,29 +94,6 @@ public class BeerSearchServlet extends HttpServlet {
 		}
 	}
 
-	private void printResults(PrintWriter out, String beerName, List<MappedBeer> results) {
-		out.println("<b>Results for \"" + beerName + "\":</b><br /> <br />");
-		out.println("<hr />");
-
-		for (MappedBeer beer : results) {
-			out.print("<h3><b>"+beer.getName() + "</b></h3>");
-			out.print("<b>abv</b>: "+beer.getAbv());
-			out.print("<br />");
-			out.println("<b>descript</b>: "+beer.getDescript());
-			out.println("<hr />");
-		}
-	}
-
-	public void setBeerDbAccess(BeerDbAccess beerDbAccess) {
-		this.beerDbAccess = beerDbAccess;
-	}
-
-	public BeerDbAccess getBeerDbAccess() {
-		if (beerDbAccess  == null) {
-			beerDbAccess = new BeerDbAccess();
-		}
-		return beerDbAccess;
-	}
 	public void setAccessList(Map<String, List<String>> accessList) {
 		this.accessList = accessList;
 	}
@@ -130,11 +106,6 @@ public class BeerSearchServlet extends HttpServlet {
 	
 	@Override
 	public void destroy() {
-		try {
-			getBeerDbAccess().getDbConnection().close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 		super.destroy();
 	}
 
