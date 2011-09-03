@@ -16,5 +16,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/home/dylan/apache-commons/commons-io-2.0.1/commons-io-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/dylan/apache-commons/apache-log4j-1.2.16/log4j-1.2.16.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
