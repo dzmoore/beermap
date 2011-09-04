@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import com.spacepocalypse.engine.BeerSearchEngine;
 import com.spacepocalypse.pojo.MappedBeer;
+import com.spacepocalypse.pojo.MappedUser;
 
 public class BeerDbAccess extends DbExecutor {
 	private static final String SELECT_
@@ -38,6 +39,76 @@ public class BeerDbAccess extends DbExecutor {
 //	lower(name) like ? " +
 //		"and upc.upca like ? " +
 //		"and abv like ? ";
+	
+	private static final String SELECT_ALL_USER = 
+		"select active from user " +
+		"where username = ?";
+	
+	private static final String SELECT_ALL_USER_AND_HASHPASS = 
+		SELECT_ALL_USER +
+		" and password = ?";
+
+	private static BeerDbAccess instance;
+	private BeerDbAccess() {}
+	
+	public static BeerDbAccess getAccess() {
+		if (instance == null) {
+			instance = new BeerDbAccess();
+		}
+		
+		return instance;
+	}
+	
+	public MappedUser findUserByUsername(String username) {
+		if (username == null || username.trim().isEmpty()) {
+			return null;
+		}
+		MappedUser user = null;
+		try {
+			PreparedStatement ps = getDbConnection().prepareStatement(SELECT_ALL_USER);
+			ps.setString(1, username);
+			ps.execute();
+			
+			ResultSet resultSet = ps.getResultSet();
+			if (resultSet.next()) {
+				user = new MappedUser(); 
+				user.setUsername(username);
+				
+				int active = resultSet.getInt(1);
+				user.setActive(active == 1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return user;
+	}
+	
+	public boolean userAndPasswordMatch(String username, String hashPass) {
+		if (username == null || username.trim().isEmpty() || hashPass == null || hashPass.trim().isEmpty()) {
+			// return immediately under various conditions
+			return false;
+		}
+		
+		PreparedStatement ps;
+		try {
+			ps = getDbConnection().prepareStatement(SELECT_ALL_USER_AND_HASHPASS);
+			ps.setString(1, username);
+			ps.setString(2, hashPass);
+			ps.execute();
+			
+			ResultSet rs = ps.getResultSet();
+			while (rs.next()) {
+				if (rs.getInt(1) == 1) {
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		
+		return false;
+	}
 	
 	public List<MappedBeer> findAllBeers(Map<String, String[]> parameters) throws SQLException, InvalidParameterException {
 		PreparedStatement ps = null;

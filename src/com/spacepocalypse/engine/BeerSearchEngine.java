@@ -22,8 +22,6 @@ public class BeerSearchEngine {
 		QUERY_KEY_UPC
 	};
 	
-	private BeerDbAccess beerDbAccess;
-
 	public static BeerSearchEngine getInstance() {
 		if (instance == null) {
 			instance = new BeerSearchEngine();
@@ -81,10 +79,7 @@ public class BeerSearchEngine {
 	}
 	
 	public BeerDbAccess getBeerDbAccess() {
-		if (beerDbAccess  == null) {
-			beerDbAccess = new BeerDbAccess();
-		}
-		return beerDbAccess;
+		return BeerDbAccess.getAccess();
 	}
 	
 	public void destroy() {
