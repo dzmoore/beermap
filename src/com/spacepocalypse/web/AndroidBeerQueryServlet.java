@@ -17,6 +17,8 @@ import org.json.JSONObject;
 
 import com.spacepocalypse.engine.BeerSearchEngine;
 import com.spacepocalypse.engine.LogonEngine;
+import com.spacepocalypse.engine.LogonEngine.AuthData;
+import com.spacepocalypse.engine.LogonEngine.AuthState;
 import com.spacepocalypse.pojo.MappedBeer;
 
 public class AndroidBeerQueryServlet extends HttpServlet {
@@ -64,14 +66,21 @@ public class AndroidBeerQueryServlet extends HttpServlet {
 		} else if (queryType.equalsIgnoreCase(QUERY_TYPE_LOGON)) {
 			String username = getFirstOrNullTrying(parameterMap, USERNAME_PARAM_KEY);
 			String hashPass = getFirstOrNullTrying(parameterMap, PASSWORD_PARAM_KEY);
-			boolean valid = LogonEngine.getInstance().authUser(username, hashPass);
+			AuthData data = LogonEngine.getInstance().authUser(username, hashPass);
 			
-			log4jLogger.info("authUser check return: " + valid);
+			log4jLogger.info("authUser check returned AuthData: [" + data.toString() + "]");
 			
 			resp.setContentType("text/plain");
 			JSONObject obj = new JSONObject();
+			
+			boolean authSuccess = data.getState() == AuthState.SUCCESS;
+			
 			try {
-				obj.put("valid", valid);
+				obj.put("success", authSuccess);
+				if (authSuccess) {
+					obj.put("user", new JSONObject(data.getUser()));
+					obj.put("timeoutAbsMs", data.getAuthTimeoutMs() + System.currentTimeMillis());
+				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

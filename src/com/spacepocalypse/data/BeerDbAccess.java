@@ -41,8 +41,8 @@ public class BeerDbAccess extends DbExecutor {
 //		"and abv like ? ";
 	
 	private static final String SELECT_ALL_USER = 
-		"select active from user " +
-		"where username = ?";
+		"select id, username, active from user " +
+		"where lower(username) = ?";
 	
 	private static final String SELECT_ALL_USER_AND_HASHPASS = 
 		SELECT_ALL_USER +
@@ -83,31 +83,34 @@ public class BeerDbAccess extends DbExecutor {
 		return user;
 	}
 	
-	public boolean userAndPasswordMatch(String username, String hashPass) {
+	public MappedUser userAndPasswordMatch(String username, String hashPass) {
 		if (username == null || username.trim().isEmpty() || hashPass == null || hashPass.trim().isEmpty()) {
 			// return immediately under various conditions
-			return false;
+			return null;
 		}
+		
+		MappedUser user = new MappedUser();
 		
 		PreparedStatement ps;
 		try {
 			ps = getDbConnection().prepareStatement(SELECT_ALL_USER_AND_HASHPASS);
-			ps.setString(1, username);
+			ps.setString(1, username.toLowerCase());
 			ps.setString(2, hashPass);
 			ps.execute();
 			
 			ResultSet rs = ps.getResultSet();
-			while (rs.next()) {
-				if (rs.getInt(1) == 1) {
-					return true;
-				}
+			if (rs.next()) {
+				user.setId(rs.getInt(1));
+				user.setUsername(rs.getString(2));
+				user.setActive(rs.getInt(3) == 1);
+				return user;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		
-		return false;
+		return null;
 	}
 	
 	public List<MappedBeer> findAllBeers(Map<String, String[]> parameters) throws SQLException, InvalidParameterException {
