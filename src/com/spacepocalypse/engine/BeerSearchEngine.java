@@ -7,20 +7,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.spacepocalypse.data.BeerDbAccess;
 import com.spacepocalypse.pojo.MappedBeer;
+import com.spacepocalypse.pojo.MappedBeerRating;
+import com.spacepocalypse.pojo.MappedValue;
 
-public class BeerSearchEngine {
+public class BeerSearchEngine implements IStoppable {
 	private static BeerSearchEngine instance;
 	
 	public static final String QUERY_KEY_NAME = "_name";
 	public static final String QUERY_KEY_ABV = "_abv";
 	public static final String QUERY_KEY_UPC = "_upc";
-	private static final String[] VALID_QUERY_KEYS = {
+	public static final String QUERY_KEY_BEER_ID = "_beerid";
+	public static final String QUERY_KEY_USER_ID = "_userid";
+	private static final String[] VALID_BEER_SEARCH_KEYS = {
 		QUERY_KEY_NAME,
 		QUERY_KEY_ABV,
 		QUERY_KEY_UPC
 	};
+	
+	private static final String[] VALID_RATING_SEARCH_KEYS = {
+		QUERY_KEY_BEER_ID,
+		QUERY_KEY_USER_ID
+	};
+	
+	private Logger log4jLogger;
+	private BeerSearchEngine() {
+		log4jLogger = Logger.getLogger(getClass());
+	}
 	
 	public static BeerSearchEngine getInstance() {
 		if (instance == null) {
@@ -29,25 +45,55 @@ public class BeerSearchEngine {
 		return instance;
 	}
 	
+	public boolean doInsertBeer(MappedBeer beer) {
+		return getBeerDbAccess().insertBeer(beer);
+	}
+	
+	public boolean doUpdateBeer(MappedBeer beer)  {
+		return getBeerDbAccess().updateById(beer);
+	}
+	
+	public boolean doInsertRating(MappedBeerRating rating)  {
+		return getBeerDbAccess().insertRating(rating);
+	}
+	
+	public boolean doUpdateRating(MappedBeerRating rating) {
+		return getBeerDbAccess().updateBeerRating(rating);
+	}
+	
 	public void doSearchByBeerName(PrintWriter out, String beerName) {
 		List<MappedBeer> results = getBeerDbAccess().findAllBeersByName(beerName);
 		printResults(out, beerName, results);
 	}
 	
-	public List<MappedBeer> doSearch(Map<String, String[]> parameters) {
-		for (String key : VALID_QUERY_KEYS) {
+	public List<MappedBeer> doBeerSearch(Map<String, String[]> parameters) {
+		for (String key : VALID_BEER_SEARCH_KEYS) {
 			if (parameters.containsKey(key)) {
 				try {
 					return getBeerDbAccess().findAllBeers(parameters);
 				} catch (InvalidParameterException e) {
-					e.printStackTrace();
+					log4jLogger.error(e.getMessage(), e);
 				} catch (SQLException e) {
-					e.printStackTrace();
+					log4jLogger.error(e.getMessage(), e);
 				}
 			}
 		}
 		
 		return new ArrayList<MappedBeer>();
+	}
+	
+	public List<MappedBeerRating> doRatingSearch(Map<String, String[]> parameters) {
+		for (String key : VALID_RATING_SEARCH_KEYS) {
+			if (parameters.containsKey(key)) {
+				return getBeerDbAccess().findAllBeerRatings(parameters);
+			}
+		}
+		
+		return new ArrayList<MappedBeerRating>();
+	}
+	
+	public List<MappedValue> doFindAllRatingTypes() {
+		return getBeerDbAccess().findAllBeerRatingLegalValues();
 	}
 
 	private void printResults(PrintWriter out, String beerName,
@@ -82,14 +128,13 @@ public class BeerSearchEngine {
 		return BeerDbAccess.getAccess();
 	}
 	
-	public void destroy() {
+	public void stop() {
 		if (instance != null) {
 			try {
-				getBeerDbAccess().getDbConnection().close();
+				getBeerDbAccess().close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				log4jLogger.error("SQLException occurred while trying to stop BeerSearchEngine", e);
 			}
-			instance = null;
 		}
 	}
 

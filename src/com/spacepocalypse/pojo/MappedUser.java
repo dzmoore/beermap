@@ -1,6 +1,16 @@
 package com.spacepocalypse.pojo;
 
-public class MappedUser {
+import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.apache.log4j.Logger;
+
+import com.spacepocalypse.json.JSONException;
+import com.spacepocalypse.json.JSONObject;
+
+public class MappedUser implements Serializable {
+	private static final long serialVersionUID = -2121990998905286418L;
 	private int id;
 	private String username;
 	private boolean active;
@@ -33,5 +43,37 @@ public class MappedUser {
 
 	public int getId() {
 		return id;
+	}
+	
+	public static MappedUser createMappedUser(ResultSet rs) throws SQLException {
+		int col = 1;
+		MappedUser user = new MappedUser();
+
+		user.setId(rs.getInt(col++));
+		user.setUsername(rs.getString(col++));
+		user.setActive(rs.getInt(col++) == 1);
+		return user;
+	}
+
+	public static MappedUser createMappedUser(JSONObject jsonObj) throws JSONException {
+		MappedUser user = new MappedUser();
+
+		if (jsonObj.has("id")) {
+			user.setId(jsonObj.getInt("id"));
+		}
+
+		if (jsonObj.has("username")) {
+			user.setUsername(jsonObj.getString("username"));
+		}
+
+		if (jsonObj.has("active")) {
+			user.setActive(jsonObj.getBoolean("active"));
+		}
+		return user;
+	}
+	
+	public static void main(String[] args) {
+		String jsonObject = new JSONObject(new MappedUser()).toString();
+		System.out.println(jsonObject);
 	}
 }

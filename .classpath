@@ -2,20 +2,13 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/dylan/tomcat/apache-tomcat-7.0.16/lib/servlet-api.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://tomcat.apache.org/tomcat-7.0-doc/servletapi"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/home/dylan/mysql-connector-java-5.0.8/mysql-connector-java-5.0.8-bin.jar"/>
-	<classpathentry kind="lib" path="/home/dylan/zxing/zxing/javase/javase.jar"/>
-	<classpathentry kind="lib" path="/home/dylan/zxing/zxing/core/core.jar" sourcepath="/home/dylan/zxing/zxing/core/src"/>
-	<classpathentry kind="lib" path="/home/dylan/apache-commons/commons-fileupload-1.2.2/lib/commons-fileupload-1.2.2.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/home/dylan/apache-commons/commons-fileupload-1.2.2/site/apidocs/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/home/dylan/apache-commons/commons-io-2.0.1/commons-io-2.0.1.jar"/>
-	<classpathentry kind="lib" path="/home/dylan/apache-commons/apache-log4j-1.2.16/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="lib/commons-fileupload-1.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.0.1.jar" sourcepath="lib/src/commons-lang3-3.0.1-src.zip"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.0.8-bin.jar"/>
+	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="lib/zxing_core.jar"/>
+	<classpathentry kind="lib" path="lib/zxing_javase.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

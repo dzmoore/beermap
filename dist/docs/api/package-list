@@ -1,5 +1,6 @@
 com.spacepocalypse.data
 com.spacepocalypse.engine
+com.spacepocalypse.json
 com.spacepocalypse.pojo
+com.spacepocalypse.util
 com.spacepocalypse.web
-org.json

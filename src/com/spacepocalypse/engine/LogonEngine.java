@@ -1,5 +1,6 @@
 package com.spacepocalypse.engine;
 
+import java.sql.SQLException;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.log4j.Logger;
@@ -7,7 +8,7 @@ import org.apache.log4j.Logger;
 import com.spacepocalypse.data.BeerDbAccess;
 import com.spacepocalypse.pojo.MappedUser;
 
-public class LogonEngine {
+public class LogonEngine implements IStoppable {
 	private static LogonEngine instance;
 	private static long DEFAULT_AUTH_TIMEOUT_MS = 1000L * 60L * 60L * 24L * 30L;  // 30 days 
 	
@@ -92,6 +93,17 @@ public class LogonEngine {
 	public enum AuthState {
 		SUCCESS,
 		ERROR
+	}
+
+	@Override
+	public void stop() {
+		if (instance != null) {
+			try {
+				getDbAccess().close();
+			} catch (SQLException e) {
+				log4jLogger.error("SQLException occurred while trying to stop LogonEngine", e);
+			}
+		}
 	}
 	
 }

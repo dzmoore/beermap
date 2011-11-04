@@ -128,7 +128,7 @@
 
   <property name="app.name"      value="beermap"/>
   <property name="app.path"      value="/${app.name}"/>
-  <property name="app.version"   value="0.2-dev"/>
+  <property name="app.version"   value="0.3-dev"/>
   <property name="build.home"    value="${basedir}/build"/>
   <property name="catalina.home" value="/home/dylan/tomcat/apache-tomcat-7.0.16"/> <!-- UPDATE THIS! -->
   <property name="dist.home"     value="${basedir}/dist"/>

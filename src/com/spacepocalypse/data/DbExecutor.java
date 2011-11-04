@@ -5,9 +5,18 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 public class DbExecutor {
-	private Connection dbConnection;
+	private Logger log4jLogger;
+	protected Connection dbConnection;
+	
+	public DbExecutor() {
+		log4jLogger = Logger.getLogger(DbExecutor.class);
+	}
 
 	public void setDbConnection(Connection dbConnection) {
 		this.dbConnection = dbConnection;
@@ -19,6 +28,7 @@ public class DbExecutor {
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 			} catch (ClassNotFoundException e) {
+				log4jLogger.error(e.getMessage());
 				e.printStackTrace();
 			}
 			
@@ -28,10 +38,35 @@ public class DbExecutor {
 						"jdbc:mysql://localhost/beerdb?" +
 						"user=root&password=3324newpasswordmysql");
 			} catch (SQLException e) {
+				log4jLogger.error(e.getMessage());
 				e.printStackTrace();
 			}
 		}
 		return dbConnection;
+	}
+	
+	public void closeAndReconnect() {
+		synchronized (dbConnection) {
+
+			Level origLvl = log4jLogger.getLevel();
+			log4jLogger.setLevel(Level.INFO);
+			if (dbConnection != null) {
+				log4jLogger.info("Attempting to close existing DB connection");
+				try {
+					dbConnection.close();
+				} catch (SQLException e) {
+					log4jLogger.error(e.getMessage());
+					e.printStackTrace();
+				}
+			}
+			log4jLogger.info("Nulling existing DB connection reference.");
+			dbConnection = null;
+
+			log4jLogger.info("Reconnecting.");
+			getDbConnection();
+
+			log4jLogger.setLevel(origLvl);
+		}
 	}
 	
 	public static void main(String[] args) {
