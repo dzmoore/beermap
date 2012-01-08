@@ -450,6 +450,7 @@ public class BeerDbAccess extends DbExecutor {
 		
 		MappedUser user = null;
 		try {
+			
 			if (rs.next()) {
 				user = new MappedUser();
 				user.setId(rs.getInt(1));
