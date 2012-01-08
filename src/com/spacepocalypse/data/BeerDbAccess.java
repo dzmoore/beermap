@@ -17,7 +17,7 @@ import com.spacepocalypse.pojo.MappedBeer;
 import com.spacepocalypse.pojo.MappedBeerRating;
 import com.spacepocalypse.pojo.MappedUser;
 import com.spacepocalypse.pojo.MappedValue;
-import com.spacepocalypse.util.Con;
+import com.spacepocalypse.util.Conca;
 
 public class BeerDbAccess extends DbExecutor {
 	private static final int DB_EXECUTE_RETRY_ATTEMPTS = 5;
@@ -458,7 +458,7 @@ public class BeerDbAccess extends DbExecutor {
 			}
 		} catch (SQLException e) {
 			log4jLogger.error(
-					Con.cat(
+					Conca.t(
 							"SQLException occurred while attempting to auth user:{",
 							"username=[", username, "] hashPass=[", hashPass, "]"
 					),
