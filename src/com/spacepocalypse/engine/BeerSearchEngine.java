@@ -71,9 +71,7 @@ public class BeerSearchEngine implements IStoppable {
 			if (parameters.containsKey(key)) {
 				try {
 					return getBeerDbAccess().findAllBeers(parameters);
-				} catch (InvalidParameterException e) {
-					log4jLogger.error(e.getMessage(), e);
-				} catch (SQLException e) {
+				} catch (Exception e) {
 					log4jLogger.error(e.getMessage(), e);
 				}
 			}

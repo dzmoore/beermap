@@ -36,7 +36,7 @@ public class DbExecutor {
 			try {
 				dbConnection = DriverManager.getConnection(
 						"jdbc:mysql://localhost/beerdb?" +
-						"user=root&password=3324newpasswordmysql");
+						"user=root&password=password");
 			} catch (SQLException e) {
 				log4jLogger.error(e.getMessage());
 				e.printStackTrace();
